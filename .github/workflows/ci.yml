@@ -29,6 +29,7 @@ jobs:
 
           echo "ci-$(date -d "${TIME}" -u +'%Y%m%d-%H%M%S')-${GITHUB_SHA:0:8}" >version
           sed -i "s|%U/targets/%S/packages|https://${OWNER}.github.io/${REPO}/${GITHUB_REF_NAME}/%R|" include/feeds.mk
+          git clone https://github.com/kenzok8/openwrt-packages package/kenzo-packages
 
       - name: Update and install feeds
         run: |
