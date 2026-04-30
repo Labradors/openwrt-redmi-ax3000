@@ -64,6 +64,8 @@ jobs:
             CONFIG_PACKAGE_luci-i18n-firewall-zh-cn=y
             CONFIG_PACKAGE_microsocks=y
           EOF
+          HEADER_FILE=feeds/luci/themes/luci-theme-bootstrap/ucode/template/themes/bootstrap/header.ut
+          sed -i 's/<a class="brand" href="\/">{{ striptags(boardinfo.hostname ?? '"'"'?'"'"') }}<\/a>/<a class="brand" href="\/">专网网闸<\/a>/g' "$HEADER_FILE"
           make defconfig
 
       - name: Download
