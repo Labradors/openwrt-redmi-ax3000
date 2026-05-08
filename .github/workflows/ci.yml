@@ -99,8 +99,7 @@ jobs:
           path: dl/*
 
   gh-pages:
-    # needs: [ build ]
-    needs: []
+    needs: [ build ]
     runs-on: ubuntu-latest
     permissions:
       contents: write
