@@ -113,8 +113,6 @@ jobs:
 
       - name: Configure the git user
         run: |
-          git commit --allow-empty
-          git rebase --skip
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
@@ -126,7 +124,9 @@ jobs:
           for commit in "${old_version[@]}"; do
             sed -i "/${commit}/d" .git/rebase-merge/git-rebase-todo
           done
-          git rebase --continue
+          git commit --allow-empty
+          git rebase --skip
+          # git rebase --continue
 
       - name: Download bin from artifacts
         uses: actions/download-artifact@v4
