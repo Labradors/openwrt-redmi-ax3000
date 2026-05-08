@@ -125,7 +125,7 @@ jobs:
           for commit in "${old_version[@]}"; do
             sed -i "/${commit}/d" .git/rebase-merge/git-rebase-todo
           done
-          git commit --allow-empty
+          git commit --allow-empty -m "ci: auto cleanup old versions"
           git rebase --skip
           # git rebase --continue
 
