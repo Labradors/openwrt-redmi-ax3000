@@ -118,17 +118,26 @@ jobs:
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git config --global core.editor "true"
 
-      - name: Drop old versions
+      # - name: Drop old versions
+      #   run: |
+      #     cd gh-pages
+      #     readarray -t old_version < <(git log --format='%h' -- "${GITHUB_REF_NAME}" | tail -n +10)
+      #     GIT_SEQUENCE_EDITOR="sed -i '1 i break'" git rebase --interactive --committer-date-is-author-date --root
+      #     for commit in "${old_version[@]}"; do
+      #       sed -i "/${commit}/d" .git/rebase-merge/git-rebase-todo
+      #     done
+      #     git commit --allow-empty -m "ci: auto cleanup old versions"
+      #     git rebase --skip
+      #     # git rebase --continue
+      - name: Reset gh-pages to latest files only
         run: |
           cd gh-pages
-          readarray -t old_version < <(git log --format='%h' -- "${GITHUB_REF_NAME}" | tail -n +10)
-          GIT_SEQUENCE_EDITOR="sed -i '1 i break'" git rebase --interactive --committer-date-is-author-date --root
-          for commit in "${old_version[@]}"; do
-            sed -i "/${commit}/d" .git/rebase-merge/git-rebase-todo
-          done
-          git commit --allow-empty -m "ci: auto cleanup old versions"
-          git rebase --skip
-          # git rebase --continue
+          # 1. 获取当前所有文件
+          git ls-tree -r HEAD --name-only | xargs tar -czf /tmp/files.tar.gz
+          
+          # 2. 切换到 orphan 分支（无历史）
+          git checkout --orphan temp-gh-pages
+          git rm -rf .
 
       - name: Download bin from artifacts
         uses: actions/download-artifact@v4
