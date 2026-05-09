@@ -126,15 +126,12 @@ jobs:
             sed -i "/${commit}/d" .git/rebase-merge/git-rebase-todo
           done
           git rebase --continue
-      #- name: Reset gh-pages to latest files only
-        #run: |
-          #cd gh-pages
-          # 1. 获取当前所有文件
-          #git ls-tree -r HEAD --name-only | xargs tar -czf /tmp/files.tar.gz
-          
-          # 2. 切换到 orphan 分支（无历史）
-          #git checkout --orphan temp-gh-pages
-          #git rm -rf .
+      - name: Reset gh-pages to latest files only
+        run: |
+          cd gh-pages
+          #1. 获取当前所有文件
+          git ls-tree -r HEAD --name-only | xargs tar -czf /tmp/files.tar.gz
+          git rm -rf .
 
       - name: Download bin from artifacts
         uses: actions/download-artifact@v4
